@@ -1,0 +1,30 @@
+﻿@model List<StudySession>
+
+<h2>Study Sessions</h2>
+<table class="table">
+    <thead>
+        <tr>
+            <th>Date</th>
+            <th>Duration (minutes)</th>
+            <th>Subject</th>
+            <th>Type</th>
+            <th>Actions</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var session in Model)
+        {
+            <tr>
+                <td>@session.Date.ToShortDateString()</td>
+                <td>@session.Duration</td>
+                <td>@session.Subject</td>
+                <td>@session.Type</td>
+                <td>
+                    <a href="/StudySessions/Edit/@session.Id">Edit</a> |
+                    <a href="/StudySessions/Delete/@session.Id">Delete</a>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
+<a href="/StudySessions/Create">Add New Session</a>
