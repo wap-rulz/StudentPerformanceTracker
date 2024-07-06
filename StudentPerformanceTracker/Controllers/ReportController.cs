@@ -20,6 +20,16 @@ namespace StudentPerformanceTracker.Controllers
             return View(studySessionSummaries);
         }
 
+        public ActionResult Graph()
+        {
+            var studySessionSummaries = GetStudySessionSummaries();
+            var labels = studySessionSummaries.Select(s => s.ModuleName).ToArray();
+            var data = studySessionSummaries.Select(s => s.TotalDuration).ToArray();
+            ViewBag.ModuleNames = labels;
+            ViewBag.TotalDuration = data;
+            return View();
+        }
+
         private List<StudySessionSummary> GetStudySessionSummaries()
         {
             var studySessionSummaries = InMemoryDatabase.Modules
