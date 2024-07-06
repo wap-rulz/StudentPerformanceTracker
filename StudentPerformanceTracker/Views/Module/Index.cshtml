@@ -79,7 +79,7 @@
                     <td>@module.Credits</td>
                     <td>
                         <a asp-action="Edit" asp-route-id="@module.Id">Edit</a> |
-                        <a asp-action="Delete" asp-route-id="@module.Id">Delete</a>
+                        <a href="#" onclick="confirmDelete('@module.Id', '@module.Name')">Delete</a>
                     </td>
                 </tr>
             }
@@ -89,3 +89,11 @@
         <a asp-action="Create" class="btn btn-primary">Add New Module</a>
     </div>
 </div>
+
+<script>
+    function confirmDelete(id, name) {
+        if (confirm(`Are you sure you want to delete module '${name}'?`)) {
+            window.location.href = `/Module/Delete/${id}`;
+        }
+    }
+</script>

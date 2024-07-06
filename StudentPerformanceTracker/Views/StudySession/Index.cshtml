@@ -85,7 +85,7 @@
                     <td>@session.ModuleName</td>
                     <td>
                         <a href="/StudySession/Edit/@session.Id">Edit</a> |
-                        <a href="/StudySession/Delete/@session.Id">Delete</a>
+                        <a href="#" onclick="confirmDelete('@session.Id', '@session.Date.ToShortDateString()')">Delete</a>
                     </td>
                 </tr>
             }
@@ -96,3 +96,11 @@
         <a asp-action="Create" class="btn btn-primary">Add New Session</a>
     </div>
 </div>
+
+<script>
+    function confirmDelete(id, date) {
+        if (confirm(`Are you sure you want to delete study session on ${date}?`)) {
+            window.location.href = `/StudySession/Delete/${id}`;
+        }
+    }
+</script>
