@@ -1,0 +1,33 @@
+﻿@model IEnumerable<dynamic>
+
+@{
+	ViewData["Title"] = "Reports";
+}
+
+<h2>Reports</h2>
+
+<h4>Study Session Summary by Module</h4>
+<table class="table">
+	<thead>
+		<tr>
+			<th>Module</th>
+			<th>Total Sessions</th>
+			<th>Total Duration</th>
+			<th>Predicted Grade</th>
+		</tr>
+	</thead>
+	<tbody>
+		@foreach (var summary in Model)
+		{
+			int hours = summary.TotalDuration / 60;
+			int minutes = summary.TotalDuration % 60;
+			string formattedDuration = $"{hours}h {minutes}min";
+			<tr>
+				<td>@summary.ModuleName</td>
+				<td>@summary.TotalSessions</td>
+				<td>@formattedDuration</td>
+				<td>@summary.PredictedGrade</td>
+			</tr>
+		}
+	</tbody>
+</table>

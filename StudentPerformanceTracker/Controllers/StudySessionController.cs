@@ -18,7 +18,9 @@ namespace StudentPerformanceTracker.Controllers
                 s.Duration,
                 s.StudyLevel,
                 ModuleName = InMemoryDatabase.Modules.SingleOrDefault(m => m.Id == s.ModuleId)?.Name
-            }).ToList();
+            })
+                .OrderBy(s => s.Date)
+                .ToList();
             return View(sessions);
         }
 
@@ -27,8 +29,8 @@ namespace StudentPerformanceTracker.Controllers
         {
             ViewBag.Modules = InMemoryDatabase.Modules;
             PopulateStudyLevelSelector(null);
-			PopulateDurationSelectors(0);
-			return View();
+            PopulateDurationSelectors(0);
+            return View();
         }
 
         // POST: StudySessionController/Create
@@ -46,8 +48,8 @@ namespace StudentPerformanceTracker.Controllers
             var session = InMemoryDatabase.StudySessions.SingleOrDefault(s => s.Id == id);
             ViewBag.Modules = InMemoryDatabase.Modules;
             PopulateStudyLevelSelector(session.StudyLevel);
-			PopulateDurationSelectors(session.Duration);
-			return View(session);
+            PopulateDurationSelectors(session.Duration);
+            return View(session);
         }
 
         // POST: StudySessionController/Edit/5
@@ -61,6 +63,7 @@ namespace StudentPerformanceTracker.Controllers
                 existingSession.Date = session.Date;
                 existingSession.Duration = session.Duration;
                 existingSession.ModuleId = session.ModuleId;
+                existingSession.StudyLevel = session.StudyLevel;
             }
             return RedirectToAction(nameof(Index));
         }
@@ -76,27 +79,27 @@ namespace StudentPerformanceTracker.Controllers
             return RedirectToAction(nameof(Index));
         }
 
-		private void PopulateDurationSelectors(int duration)
-		{
-			var hours = Enumerable.Range(0, 13).Select(i => new { Key = i, Value = $"{i} h" });
-			var minutes = Enumerable.Range(0, 60).Where(i => i % 5 == 0).Select(i => new { Key = i, Value = $"{i} min" });
+        private void PopulateDurationSelectors(int duration)
+        {
+            var hours = Enumerable.Range(0, 13).Select(i => new { Key = i, Value = $"{i} h" });
+            var minutes = Enumerable.Range(0, 60).Where(i => i % 5 == 0).Select(i => new { Key = i, Value = $"{i} min" });
 
-			ViewBag.Hours = new SelectList(hours, "Key", "Value", duration / 60);
-			ViewBag.Minutes = new SelectList(minutes, "Key", "Value", duration % 60);
-		}
+            ViewBag.Hours = new SelectList(hours, "Key", "Value", duration / 60);
+            ViewBag.Minutes = new SelectList(minutes, "Key", "Value", duration % 60);
+        }
 
-		private void PopulateStudyLevelSelector(StudyLevel? studyLevel)
-		{
+        private void PopulateStudyLevelSelector(StudyLevel? studyLevel)
+        {
             SelectList StudyLevels;
             if (studyLevel == null)
             {
                 StudyLevels = new SelectList(Enum.GetValues(typeof(StudyLevel)));
             }
             else
-			{
-				StudyLevels = new SelectList(Enum.GetValues(typeof(StudyLevel)), studyLevel);
-			}
+            {
+                StudyLevels = new SelectList(Enum.GetValues(typeof(StudyLevel)), studyLevel);
+            }
             ViewBag.StudyLevels = StudyLevels;
-		}
-	}
+        }
+    }
 }
